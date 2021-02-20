@@ -1,7 +1,7 @@
 extern crate libloading;
 extern crate libc;
 
-unsafe extern "C" fn callback() -> () {
+fn callback() -> () {
     println!("callback()");
 }
 
@@ -13,7 +13,7 @@ fn main() {
 fn call_dynamic() -> Result<u32, Box<dyn std::error::Error>> {
     unsafe {
         let lib = libloading::Library::new("lib.dll")?;
-        let foo: libloading::Symbol<unsafe extern fn(unsafe extern "C" fn()) -> u32> = lib.get(b"foo")?;
+        let foo: libloading::Symbol<fn(fn()) -> u32> = lib.get(b"foo")?;
         Ok(foo(callback))
     }
 }
